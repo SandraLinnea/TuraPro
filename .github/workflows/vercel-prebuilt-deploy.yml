@@ -48,8 +48,18 @@ jobs:
           fi
           echo "Vercel secrets are present."
 
+      - name: Create Vercel project link
+        run: |
+          mkdir -p .vercel
+          cat > .vercel/project.json <<EOF
+          {
+            "projectId": "$VERCEL_PROJECT_ID",
+            "orgId": "$VERCEL_ORG_ID"
+          }
+          EOF
+
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --scope="$VERCEL_ORG_ID" --token="$VERCEL_TOKEN"
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
 
       - name: Restore
         run: dotnet restore TuraPro/TuraPro.csproj
@@ -72,4 +82,4 @@ jobs:
           EOF
 
       - name: Deploy to Vercel
-        run: vercel deploy --prebuilt --prod --scope="$VERCEL_ORG_ID" --token="$VERCEL_TOKEN"
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
