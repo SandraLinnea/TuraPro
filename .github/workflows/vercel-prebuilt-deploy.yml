@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
@@ -31,8 +32,24 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
+      - name: Verify Vercel secrets
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "VERCEL_TOKEN is missing"
+            exit 1
+          fi
+          if [ -z "$VERCEL_ORG_ID" ]; then
+            echo "VERCEL_ORG_ID is missing"
+            exit 1
+          fi
+          if [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "VERCEL_PROJECT_ID is missing"
+            exit 1
+          fi
+          echo "Vercel secrets are present."
+
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --scope=${{ env.VERCEL_ORG_ID }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=production --scope="$VERCEL_ORG_ID" --token="$VERCEL_TOKEN"
 
       - name: Restore
         run: dotnet restore TuraPro/TuraPro.csproj
@@ -55,4 +72,4 @@ jobs:
           EOF
 
       - name: Deploy to Vercel
-        run: vercel deploy --prebuilt --prod --scope=${{ env.VERCEL_ORG_ID }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --prod --scope="$VERCEL_ORG_ID" --token="$VERCEL_TOKEN"
