@@ -1,0 +1,362 @@
+.hero-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+}
+
+.hero-panel h1 {
+    margin: 0;
+    max-width: 14ch;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.6rem, 6vw, 4.5rem);
+    line-height: 0.95;
+    color: #142021;
+}
+
+.eyebrow,
+.section-kicker,
+.preview-label,
+.preview-section-label {
+    margin: 0 0 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #59706a;
+}
+
+.hero-copy,
+.support-copy {
+    color: #4a5a58;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.hero-logo-panel,
+.surface-card,
+.invoice-preview {
+    border-radius: 5px;
+    box-shadow: 0 24px 80px rgba(25, 41, 39, 0.08);
+}
+
+.surface-card,
+.invoice-preview {
+    border: 1px solid rgba(24, 37, 38, 0.08);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.hero-logo-panel {
+    background: transparent;
+    box-shadow: none;
+}
+
+.hero-logo-panel {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+}
+
+.hero-logo {
+    width: min(100%, 430px);
+    height: auto;
+    object-fit: contain;
+}
+
+.workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(380px, 0.9fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.editor-column,
+.preview-column {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.surface-card,
+.invoice-preview {
+    padding: 1.5rem;
+}
+
+.section-heading,
+.invoice-topbar,
+.invoice-meta,
+.action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.section-heading h2,
+.invoice-footer strong {
+    margin: 0;
+    color: #172122;
+}
+
+.muted-tag {
+    padding: 0.4rem 0.7rem;
+    border-radius: 5px;
+    background: #eef2ee;
+    color: #46605a;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.2rem;
+}
+
+.form-grid label,
+.line-item label {
+    display: grid;
+    gap: 0.45rem;
+    color: #304240;
+    font-size: 0.95rem;
+}
+
+.full-width,
+.description-field {
+    grid-column: 1 / -1;
+}
+
+input {
+    width: 100%;
+    border: 1px solid rgba(23, 52, 58, 0.14);
+    border-radius: 5px;
+    padding: 0.9rem 1rem;
+    background: #fcfdfc;
+    color: #152122;
+}
+
+.line-items {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.25rem;
+}
+
+.line-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1.8fr) repeat(3, minmax(90px, 1fr)) minmax(120px, auto) auto;
+    gap: 0.85rem;
+    padding: 1rem;
+    border-radius: 5px;
+    background: #f8faf8;
+}
+
+.line-total {
+    display: grid;
+    align-content: center;
+    color: #4b5a58;
+}
+
+.line-total strong {
+    color: #172324;
+}
+
+.primary-button,
+.secondary-button,
+.ghost-button {
+    border: none;
+    border-radius: 5px;
+    padding: 0.85rem 1.15rem;
+    font-weight: 700;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.primary-button {
+    background: #18353b;
+    color: #f8fbfa;
+}
+
+.secondary-button {
+    background: #dfe8e2;
+    color: #17333a;
+}
+
+.ghost-button {
+    background: transparent;
+    color: #35504a;
+    border: 1px solid rgba(23, 52, 58, 0.14);
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.ghost-button:hover {
+    transform: translateY(-1px);
+}
+
+.primary-button:disabled,
+.secondary-button:disabled,
+.ghost-button:disabled {
+    opacity: 0.55;
+    transform: none;
+}
+
+.invoice-preview {
+    position: sticky;
+    top: 1rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 250, 248, 0.96) 100%);
+}
+
+.preview-logo {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+}
+
+.invoice-meta,
+.company-grid {
+    margin-top: 1.5rem;
+}
+
+.invoice-meta div,
+.totals-panel div {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.invoice-meta span,
+.company-grid p,
+.totals-panel span {
+    color: #576765;
+}
+
+.company-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid rgba(24, 37, 38, 0.08);
+    border-bottom: 1px solid rgba(24, 37, 38, 0.08);
+}
+
+.company-grid strong,
+.invoice-meta strong,
+.totals-panel strong {
+    color: #152021;
+}
+
+.company-grid p {
+    margin: 0.15rem 0;
+}
+
+.invoice-table {
+    width: 100%;
+    margin-top: 1.25rem;
+    border-collapse: collapse;
+}
+
+.invoice-table th,
+.invoice-table td {
+    padding: 0.9rem 0.35rem;
+    border-bottom: 1px solid rgba(24, 37, 38, 0.08);
+    text-align: left;
+}
+
+.invoice-table th {
+    color: #5d6b68;
+    font-size: 0.84rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.totals-panel {
+    display: grid;
+    gap: 0.8rem;
+    justify-content: end;
+    margin-top: 1.4rem;
+}
+
+.grand-total {
+    margin-top: 0.35rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(24, 37, 38, 0.1);
+}
+
+.grand-total strong {
+    font-size: 1.25rem;
+}
+
+.invoice-footer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(24, 37, 38, 0.12);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.5rem;
+}
+
+.invoice-footer div {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.invoice-footer span {
+    color: #576765;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+@media (max-width: 1100px) {
+    .workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .invoice-preview {
+        position: static;
+    }
+}
+
+@media (max-width: 820px) {
+    .hero-panel,
+    .form-grid,
+    .company-grid,
+    .invoice-footer {
+        grid-template-columns: 1fr;
+    }
+
+    .line-item {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .hero-logo-panel {
+        min-height: 220px;
+    }
+}
+
+@media (max-width: 560px) {
+    .surface-card,
+    .invoice-preview,
+    .hero-logo-panel {
+        padding: 1.1rem;
+        border-radius: 5px;
+    }
+
+    .section-heading,
+    .invoice-topbar,
+    .invoice-meta,
+    .action-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .line-item {
+        grid-template-columns: 1fr;
+    }
+
+    .preview-logo {
+        width: 60px;
+        height: 60px;
+    }
+}

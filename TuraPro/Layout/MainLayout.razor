@@ -1,16 +1,18 @@
-﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+@inherits LayoutComponentBase
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+<div class="app-shell">
+    <main class="app-main">
+        @Body
+    </main>
+
+    <footer class="app-footer">
+        <div class="footer-left">
+            <span class="footer-brand">TuraPro</span>
+            <a class="footer-link" href="https://sandra-bjorklund.vercel.app/" target="_blank" rel="noreferrer">Portfolio</a>
         </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+        <p class="footer-copy">© 2026 Sandra björklund.</p>
+
+        <div class="footer-spacer" aria-hidden="true"></div>
+    </footer>
 </div>

@@ -1,7 +1,272 @@
-﻿@page "/"
+@page "/"
+@using System.Globalization
+@inject IJSRuntime JS
+@inject TuraPro.Services.InvoiceService InvoiceService
 
-<PageTitle>Home</PageTitle>
+<PageTitle>TuraPro | Fakturagenerator</PageTitle>
 
-<h1>Hello, world!</h1>
+<section class="hero-panel">
+    <div>
+        <p class="eyebrow">Professionell svensk fakturering</p>
+        <h1>Skapa dina fakturor enkelt</h1>
+        <p class="hero-copy">
+            Lagg till kund, fakturarader, moms och fa en fardig faktura att skriva ut eller spara som PDF.
+            Byggd for att kannas som en modern affarsapplikation redan i forsta versionen.
+        </p>
+    </div>
 
-Welcome to your new app.
+    <div class="hero-logo-panel" aria-hidden="true">
+        <img class="hero-logo" src="TuraProLogo.png" alt="" />
+    </div>
+</section>
+
+<section class="workspace">
+    <div class="editor-column print-hidden">
+        <div class="surface-card">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">Kund</p>
+                    <h2>Kunduppgifter</h2>
+                </div>
+                <span class="muted-tag">Steg 1</span>
+            </div>
+
+            <div class="form-grid">
+                <label>
+                    <span>Kundnamn</span>
+                    <input @bind="invoice.Customer.Name" placeholder="Exempelbolaget AB" />
+                </label>
+                <label>
+                    <span>E-post</span>
+                    <input @bind="invoice.Customer.Email" type="email" placeholder="faktura@kund.se" />
+                </label>
+                <label class="full-width">
+                    <span>Adress</span>
+                    <input @bind="invoice.Customer.Address" placeholder="Storgatan 1, 111 22 Stockholm" />
+                </label>
+                <label>
+                    <span>Telefon</span>
+                    <input @bind="invoice.Customer.Phone" placeholder="+46 70 123 45 67" />
+                </label>
+                <label>
+                    <span>Forfallodatum</span>
+                    <input @bind="invoice.DueDate" @bind:format="yyyy-MM-dd" type="date" />
+                </label>
+            </div>
+        </div>
+
+        <div class="surface-card">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">Faktura</p>
+                    <h2>Fakturarader</h2>
+                </div>
+                <button class="secondary-button" type="button" @onclick="AddItem">Lagg till rad</button>
+            </div>
+
+            <div class="line-items">
+                @foreach (var item in invoice.Items)
+                {
+                    <div class="line-item">
+                        <label class="description-field">
+                            <span>Beskrivning</span>
+                            <input @bind="item.Description" placeholder="Konsulttjanst" />
+                        </label>
+                        <label>
+                            <span>Antal</span>
+                            <input @bind="item.Quantity" type="number" min="1" />
+                        </label>
+                        <label>
+                            <span>Pris</span>
+                            <input @bind="item.Price" type="number" min="0" step="0.01" />
+                        </label>
+                        <label>
+                            <span>Moms %</span>
+                            <input @bind="item.VatRate" type="number" min="0" max="100" step="1" />
+                        </label>
+                        <div class="line-total">
+                            <span>Radtotal</span>
+                            <strong>@FormatCurrency(item.Total)</strong>
+                        </div>
+                        <button class="ghost-button" type="button" @onclick="() => RemoveItem(item)" disabled="@(invoice.Items.Count == 1)">
+                            Ta bort
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="surface-card">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">Export</p>
+                    <h2>Klar for utskrift</h2>
+                </div>
+                <span class="muted-tag">Steg 3</span>
+            </div>
+
+            <p class="support-copy">
+                Valj <strong>Spara som PDF</strong> i utskriftsdialogen for att ladda ner fakturan som PDF.
+            </p>
+
+            <div class="action-row">
+                <button class="primary-button" type="button" @onclick="GeneratePdfAsync">Generera PDF</button>
+                <button class="ghost-button" type="button" @onclick="ResetInvoice">Nytt utkast</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-column">
+        <section class="invoice-preview" id="invoice-preview">
+            <div class="invoice-topbar">
+                <div>
+                    <p class="preview-label">Faktura</p>
+                </div>
+                <img class="preview-logo" src="TuraProLogo.png" alt="TuraPro" />
+            </div>
+
+            <div class="invoice-meta">
+                <div>
+                    <span>Fakturadatum</span>
+                    <strong>@invoice.CreatedDate.ToString("dd MMM yyyy", SwedishCulture)</strong>
+                </div>
+                <div>
+                    <span>Forfallodatum</span>
+                    <strong>@invoice.DueDate.ToString("dd MMM yyyy", SwedishCulture)</strong>
+                </div>
+                <div>
+                    <span>Status</span>
+                    <strong>@GetStatusLabel(invoice.Status)</strong>
+                </div>
+            </div>
+
+            <div class="company-grid">
+                <div>
+                    <p class="preview-section-label">Fran</p>
+                    <strong>TuraPro AB</strong>
+                    <p>Affarsgatan 10</p>
+                    <p>111 22 Stockholm</p>
+                    <p>kontakt@turapro.se</p>
+                </div>
+                <div>
+                    <p class="preview-section-label">Till</p>
+                    <strong>@DisplayOrFallback(invoice.Customer.Name, "Ingen kund vald")</strong>
+                    <p>@DisplayOrFallback(invoice.Customer.Address, "Adress saknas")</p>
+                    <p>@DisplayOrFallback(invoice.Customer.Email, "E-post saknas")</p>
+                    <p>@DisplayOrFallback(invoice.Customer.Phone, "Telefon saknas")</p>
+                </div>
+            </div>
+
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>Beskrivning</th>
+                        <th>Antal</th>
+                        <th>Pris</th>
+                        <th>Moms</th>
+                        <th>Totalt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in invoice.Items)
+                    {
+                        <tr>
+                            <td>@DisplayOrFallback(item.Description, "Fakturarad")</td>
+                            <td>@item.Quantity</td>
+                            <td>@FormatCurrency(item.Price)</td>
+                            <td>@item.VatRate.ToString("0", SwedishCulture) %</td>
+                            <td>@FormatCurrency(item.Total)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="totals-panel">
+                <div>
+                    <span>Delsumma</span>
+                    <strong>@FormatCurrency(invoice.Subtotal)</strong>
+                </div>
+                <div>
+                    <span>Moms</span>
+                    <strong>@FormatCurrency(invoice.TotalVat)</strong>
+                </div>
+                <div class="grand-total">
+                    <span>Totalsumma</span>
+                    <strong>@FormatCurrency(invoice.Total)</strong>
+                </div>
+            </div>
+
+            <div class="invoice-footer">
+                <div>
+                    <span>Företag</span>
+                    <strong>TuraPro AB</strong>
+                </div>
+                <div>
+                    <span>Organisationsnummer</span>
+                    <strong>559000-1234</strong>
+                </div>
+                <div>
+                    <span>Bankgiro</span>
+                    <strong>123-4567</strong>
+                </div>
+                <div>
+                    <span>Kontakt</span>
+                    <strong>kontakt@turapro.se</strong>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+@code {
+    private static readonly CultureInfo SwedishCulture = CultureInfo.GetCultureInfo("sv-SE");
+
+    private Invoice invoice = new();
+
+    protected override void OnInitialized()
+    {
+        ResetInvoice();
+    }
+
+    private void AddItem()
+    {
+        invoice.Items.Add(new InvoiceItem
+        {
+            Description = string.Empty,
+            Quantity = 1,
+            Price = 0,
+            VatRate = 25
+        });
+    }
+
+    private async Task GeneratePdfAsync()
+    {
+        await JS.InvokeVoidAsync("turaPro.printInvoice");
+    }
+
+    private string GetStatusLabel(InvoiceStatus status) => status switch
+    {
+        InvoiceStatus.Draft => "Utkast",
+        InvoiceStatus.Sent => "Skickad",
+        InvoiceStatus.Paid => "Betald",
+        _ => "Utkast"
+    };
+
+    private static string DisplayOrFallback(string? value, string fallback) =>
+        string.IsNullOrWhiteSpace(value) ? fallback : value;
+
+    private string FormatCurrency(decimal amount) => amount.ToString("C", SwedishCulture);
+
+    private void RemoveItem(InvoiceItem item)
+    {
+        if (invoice.Items.Count > 1)
+        {
+            invoice.Items.Remove(item);
+        }
+    }
+
+    private void ResetInvoice()
+    {
+        invoice = InvoiceService.CreateDraft();
+    }
+}
