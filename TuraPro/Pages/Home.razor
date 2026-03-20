@@ -49,7 +49,7 @@
                     <input @bind="invoice.Customer.Phone" placeholder="+46 70 123 45 67" />
                 </label>
                 <label>
-                    <span>Forfallodatum</span>
+                    <span>Förfallodatum</span>
                     <input @bind="invoice.DueDate" @bind:format="yyyy-MM-dd" type="date" />
                 </label>
             </div>
@@ -100,13 +100,13 @@
             <div class="section-heading">
                 <div>
                     <p class="section-kicker">Export</p>
-                    <h2>Klar for utskrift</h2>
+                    <h2>Klar för utskrift</h2>
                 </div>
                 <span class="muted-tag">Steg 3</span>
             </div>
 
             <p class="support-copy">
-                Valj <strong>Spara som PDF</strong> i utskriftsdialogen for att ladda ner fakturan som PDF.
+                Välj <strong>Spara som PDF</strong> i utskriftsdialogen for att ladda ner fakturan som PDF.
             </p>
 
             <div class="action-row">
@@ -131,7 +131,7 @@
                     <strong>@invoice.CreatedDate.ToString("dd MMM yyyy", SwedishCulture)</strong>
                 </div>
                 <div>
-                    <span>Forfallodatum</span>
+                    <span>Förfallodatum</span>
                     <strong>@invoice.DueDate.ToString("dd MMM yyyy", SwedishCulture)</strong>
                 </div>
                 <div>
@@ -142,7 +142,7 @@
 
             <div class="company-grid">
                 <div>
-                    <p class="preview-section-label">Fran</p>
+                    <p class="preview-section-label">Från</p>
                     <strong>TuraPro AB</strong>
                     <p>Affarsgatan 10</p>
                     <p>111 22 Stockholm</p>
